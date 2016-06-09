@@ -1,0 +1,12 @@
+#!/bin/bash
+
+f2mtz HKLOUT $2 << EOF-mtz
+TITLE XDS to MTZ
+FILE $1
+SYMMETRY   4
+#CELL    68.95    90.20   171.66  90.000  90.000  90.000
+CELL    134.23   300.88   144.62  90.000 112.996  90.000
+LABOUT  H K L FP SIGFP F(+) SIGF(+) F(-) SIGF(-) FreeRflag
+CTYPOUT H H H  F   Q    G     L      G     L         X
+END
+EOF-mtz

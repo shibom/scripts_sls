@@ -1,0 +1,10 @@
+#!/bin/bash
+
+shelxc col2 << eof | tee shelxc.log
+SAD merge_osc1to4.ahkl
+CELL 90.17    171.69     68.93  90.000  90.000  90.000 
+SPAG P21212
+FIND 24
+SFAC S
+eof
+

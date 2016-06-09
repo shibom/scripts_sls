@@ -1,0 +1,9 @@
+#!/bin/bash
+
+phenix.scale_and_merge data=multi_mtz/ data_labels='I(+),SIGI(+),I(-),SIGI(-)' \
+                    output_file=comb.mtz nproc=8 \
+                    output_half_dataset_a=scaled_sortA.mtz \
+                    output_half_dataset_b=scaled_sortB.mtz \
+                    output_file_format=mtz optimize_anomalous=True \
+                    choose_optimal_datasets=True \
+                    sort_datasets_by_anomalous_cc=True

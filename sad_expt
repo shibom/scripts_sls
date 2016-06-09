@@ -1,0 +1,5 @@
+#!/bin/bash
+
+phenix.plan_sad_experiment atom_type=S wavelength=2.067 \
+                           sites=18 number_of_s=18 residues=660 \
+                           resolution=2.5 solvent_fraction=0.6

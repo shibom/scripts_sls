@@ -1,0 +1,5 @@
+INPUT_FILE=XDS_ASCII.HKL
+INCLUDE_RESOLUTION_RANGE=50 1  ! optional
+OUTPUT_FILE=ccp4.hkl  CCP4_F    ! Warning: do _not_ name this file "temp.mtz" !
+FRIEDEL'S_LAW=FALSE         ! default is FRIEDEL'S_LAW=TRUE
+GENERATE_FRACTION_OF_TEST_REFLECTIONS=0.05    ! create Rfree set

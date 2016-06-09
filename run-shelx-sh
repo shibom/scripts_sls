@@ -1,0 +1,53 @@
+#!/bin/bash
+
+infile=$1
+unit_cell="212.57   161.79   145.91  90.000 117.510  90.000"
+symm='C121'
+
+reso="3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9 4.0"
+
+echo $unit_cell
+echo $symm
+
+echo "Running shelxc"
+
+
+for ((sites=50;sites<51;sites++))
+do
+  echo "SAD" $infile >> c.inp
+  echo "CELL" $unit_cell >> c.inp
+  echo "SPAG" $symm >> c.inp
+  echo "FIND" $sites >> c.inp
+  echo "SFAC S" >> c.inp
+  shelxc pro-$sites < c.inp | tee pro-$sites-shelxc.log
+  rm c.inp
+  var='pro'-$sites'_fa';
+  var1='pro'-$sites
+  min_cfom=20.0
+  for res in $reso
+  do
+    sed -i.bak '/SHEL/d' $var.ins
+    sed -i.bak 's/NTRY 1000/NTRY 100/g' $var.ins
+    sed -i.bak '/HKLF/d' $var.ins
+    sed -i.bak '/END/d' $var.ins
+    echo "SHEL 999" $res >> $var.ins
+    echo "HKLF 3" >> $var.ins
+    echo "END" >> $var.ins
+    shelxd 'pro'-$sites'_fa' | tee pro-$sites-$res-shelxd.log
+    
+    cfom=`cat $var.res | grep 'CFOM' | awk '{print $10}'`
+        
+    if (( $(echo $cfom | bc) < $min_cfom ))
+    then
+      echo 'I am not saving '$var1.* 'files.'$cfom 'value is too low\n.'
+      rm $var1*;
+    elif (( $(echo $cfom | bc) < $min_cfom ))
+    then
+      cp $var.* $res-$var.*
+      cp $var1* $var1-$res*
+    fi
+  done 
+done
+
+
+

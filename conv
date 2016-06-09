@@ -1,0 +1,33 @@
+#!/bin/bash
+
+infile=$1
+symm= echo `grep 'SPACE_GROUP_NUMBER' $1 | awk '{print $2}'`
+cells= echo `grep 'UNIT_CELL_CONSTANTS' $1 | awk '{print $2, $3, $4, $5, $6, $7}'`
+echo $symm
+echo $cells
+
+echo "creating xdsconv input file.."
+
+rm XDSCONV.INP
+
+echo "INPUT_FILE=" $1 >> XDSCONV.INP
+echo "INCLUDE_RESOLUTION_RANGE=50 2.8" >> XDSCONV.INP
+echo "OUTPUT_FILE=temp.hkl CCP4_F" >> XDSCONV.INP
+echo "FRIEDEL'S_LAW=FALSE" >> XDSCONV.INP
+echo "GENERATE_FRACTION_OF_TEST_REFLECTIONS=0.05" >> XDSCONV.INP
+
+xdsconv
+
+echo "creating mtz.."
+
+f2mtz HKLOUT $2 << EOF-mtz
+TITLE XDS to MTZ
+FILE temp.hkl
+SYMMETRY `echo $symm`
+CELL    $cells
+LABOUT  H K L FP SIGFP F(+) SIGF(+) F(-) SIGF(-) FreeRflag
+CTYPOUT H H H  F   Q    G     L      G     L         X
+END
+EOF-mtz
+
+rm temp.hkl

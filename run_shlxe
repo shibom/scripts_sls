@@ -1,0 +1,4 @@
+#!/bin/bash
+
+shelxe $1 $1_fa -s0.6 -a3 -z \
+          -d3.2 -e1 -m20 -h32 -l100000 -i
